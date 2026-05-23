@@ -531,9 +531,20 @@ function renderSchedule(){
       ${i>=DEFAULT_EXERCISES.length?`<button class="list-item-del" onclick="rmvEx(${i})">×</button>`:'<span class="tiny muted">default</span>'}
     </div>`;
   });
-  h+=`<div class="add-row" style="margin-top:12px">
+  h+=`<div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
     <input type="text" id="new-ex-input" placeholder="Naziv vežbe..." />
-    <button onclick="addEx()">Dodaj</button>
+    <div style="display:flex;gap:8px">
+      <select id="new-ex-part" style="flex:1"><option value="Grudi">Grudi</option>
+<option value="Leđa">Leđa</option>
+<option value="Ramena">Ramena</option>
+<option value="Bicepsi">Bicepsi</option>
+<option value="Tricepsi">Tricepsi</option>
+<option value="Noge">Noge</option>
+<option value="Trbuh">Trbuh</option>
+<option value="Kardio">Kardio</option>
+<option value="Celo telo">Celo telo</option></select>
+      <button onclick="addEx()" style="background:var(--accent);border:none;color:#fff;padding:10px 16px;border-radius:var(--radius-xs);font-weight:600;cursor:pointer;font-size:14px;white-space:nowrap">Dodaj</button>
+    </div>
   </div></div>`;
 
   document.getElementById('screen-schedule').innerHTML=h;
@@ -551,7 +562,8 @@ function addEx(){
   const inp=document.getElementById('new-ex-input');
   const name=inp.value.trim();
   if(!name)return;
-  state.exercises.push({id:'c'+Date.now(),name,part:'Celo telo'});
+  const part=document.getElementById('new-ex-part')?.value||'Celo telo';
+  state.exercises.push({id:'c'+Date.now(),name,part});
   inp.value='';save();renderSchedule();
   showToast('Vežba dodana');
 }
